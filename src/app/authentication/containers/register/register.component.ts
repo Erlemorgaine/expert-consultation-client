@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
 
   public ngOnInit() {
     this.route.data.subscribe((data: Data) => {
-      this.invitation = data.invitation;
+      // todo Erle: revert
+      this.invitation = Object.assign(new Invitation(), {email: 'test@1.nl', code: 'test'})  // data.invitation;
       if (!!this.signUpForm && !!this.invitation) {
         this.signUpForm.controls.email.setValue(this.invitation.email);
         this.signUpForm.controls.email.disable();

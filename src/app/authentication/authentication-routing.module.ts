@@ -9,11 +9,12 @@ const routes: Routes = [
     component: fromContainers.LoginComponent,
   },
   {
-    path: 'register/:code',
+    // todo Erle: revert
+    path: 'register',
     component: fromContainers.RegisterComponent,
-    resolve: {
-      invitation: InvitationResolver,
-    }
+    // resolve: {
+    //   invitation: InvitationResolver,
+    // }
   },
 ];
 
