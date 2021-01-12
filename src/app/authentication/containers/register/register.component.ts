@@ -16,6 +16,7 @@ import { MatchControlValue } from '@app/shared/utils/matchControlValue';
 export class RegisterComponent implements OnInit {
   public aUser: UserRequest;
   public isSubmitted = false;
+  public isRegistering = false;
   public wasValidated = false;
   public generalErrors: I18nError[];
   public invitation: Invitation;
@@ -62,9 +63,15 @@ export class RegisterComponent implements OnInit {
     aSignUp.invitationCode = this.invitation.code;
     aSignUp.email = this.invitation.email;
 
+    // todo Erle: test show spinner while signup not completed.
+    // todo Erle: run test and lint
+    this.isRegistering = true;
     this.authenticationApiService.signup(aSignUp)
         .subscribe({
-          next: signup => this.router.navigate(['login']),
+          next: signup => {
+            this.isRegistering = false;
+            this.router.navigate(['login']);
+          },
           error: errors => {
             this.wasValidated = true;
             this.generalErrors = Tools.safeGet(() => errors.error.i18nErrors);
