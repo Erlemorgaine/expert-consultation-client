@@ -16,7 +16,7 @@ import { MatchControlValue } from '@app/shared/utils/matchControlValue';
 export class RegisterComponent implements OnInit {
   public aUser: UserRequest;
   public isSubmitted = false;
-  public isRegistering = false;
+  public isCompletingRegistration = false;
   public wasValidated = false;
   public generalErrors: I18nError[];
   public invitation: Invitation;
@@ -39,8 +39,8 @@ export class RegisterComponent implements OnInit {
 
   public ngOnInit() {
     this.route.data.subscribe((data: Data) => {
-      // todo Erle: revert
-      this.invitation = Object.assign(new Invitation(), {email: 'test@1.nl', code: 'test'})  // data.invitation;
+      this.invitation = data.invitation;
+
       if (!!this.signUpForm && !!this.invitation) {
         this.signUpForm.controls.email.setValue(this.invitation.email);
         this.signUpForm.controls.email.disable();
@@ -64,13 +64,11 @@ export class RegisterComponent implements OnInit {
     aSignUp.invitationCode = this.invitation.code;
     aSignUp.email = this.invitation.email;
 
-    // todo Erle: test show spinner while signup not completed.
-    // todo Erle: run test and lint
-    this.isRegistering = true;
+    this.isCompletingRegistration = true;
     this.authenticationApiService.signup(aSignUp)
         .subscribe({
           next: signup => {
-            this.isRegistering = false;
+            this.isCompletingRegistration = false;
             this.router.navigate(['login']);
           },
           error: errors => {
