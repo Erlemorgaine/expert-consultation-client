@@ -67,11 +67,8 @@ export class RegisterComponent implements OnInit {
     this.isCompletingRegistration = true;
     this.authenticationApiService.signup(aSignUp)
         .subscribe({
-          next: signup => {
-            this.isCompletingRegistration = false;
-            this.router.navigate(['login']);
-          },
           error: errors => {
+            this.isCompletingRegistration = false;
             this.wasValidated = true;
             this.generalErrors = Tools.safeGet(() => errors.error.i18nErrors);
             const i18nFieldErrors: Map<string, I18nError> = Tools.safeGet(() => errors.error.i18nFieldErrors);
@@ -88,6 +85,10 @@ export class RegisterComponent implements OnInit {
                 [i18nFieldErrors[field].i18nErrorKey]: i18nFieldErrors[field].i18nErrorArguments
               });
             });
+          },
+          complete: () => {
+            this.isCompletingRegistration = false;
+            this.router.navigate(['login']);
           }
         });
   }
