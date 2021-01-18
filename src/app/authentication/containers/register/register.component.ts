@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit {
     this.isCompletingRegistration = true;
     this.authenticationApiService.signup(aSignUp)
         .subscribe({
+          next: signup => this.router.navigate(['login']),
           error: errors => {
             this.isCompletingRegistration = false;
             this.wasValidated = true;
@@ -86,10 +87,7 @@ export class RegisterComponent implements OnInit {
               });
             });
           },
-          complete: () => {
-            this.isCompletingRegistration = false;
-            this.router.navigate(['login']);
-          }
+          complete: () => this.isCompletingRegistration = false
         });
   }
 
